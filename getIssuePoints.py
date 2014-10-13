@@ -6,7 +6,7 @@ options = {
 jira = JIRA(options)
 
 # print the object returned from a search
-search_response = jira.search_issues('project = DNS AND status not in (Done)', maxResults=30000)
+search_response = jira.search_issues('priority = Blocker AND project = "Cloud DNS" ORDER BY cf[10008] DESC', maxResults=30000)
 #print search_response
 
 # print open issues with key, points, summary
