@@ -1,4 +1,5 @@
 from jira.client import JIRA
+import datetime
 
 options = {
     'server': 'https://jira.rax.io'
@@ -44,12 +45,15 @@ print "TBD"
 
 # Sprints required at x velocity
 weeks_in_sprint = 3
-velocity = 45
+velocity = 80
 sprints_remaining = backlog_sum/velocity
+weeks_remain = sprints_remaining*weeks_in_sprint
+months_remain = round(weeks_remain/4.3, 1)
 print ""
 print "=================================="
 print "TIME REMAINING:"
 print "Sprints remaining at %s velocity: %s" %(velocity,sprints_remaining)
-print "%s weeks remain." %(sprints_remaining*weeks_in_sprint)
+print "%s weeks remain (~%s months)" %(weeks_remain,months_remain)
+print "Estimated delivery date: %s." % ((datetime.date.today() + datetime.timedelta(weeks_remain*7)).isoformat())
 
 # new stories since x
