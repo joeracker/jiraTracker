@@ -44,7 +44,7 @@ print "TBD"
 
 # Sprints required at x velocity
 weeks_in_sprint = 3
-velocity = 33
+velocity = 45
 sprints_remaining = backlog_sum/velocity
 print ""
 print "=================================="
