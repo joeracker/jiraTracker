@@ -1,4 +1,6 @@
 from search import Search
+from pprint import pprint
+import json
 
 search_query = """
 		project = 'Cloud DNS' 
@@ -30,4 +32,16 @@ def get_issues_no_label():
 	print("%s total issues. %s total points.") % (
 		issues.get_issue_count(), issues.get_point_sum())
 
-get_issues_with_label()
+def get_issues_open_ea_by_epic():
+	# get list of issues
+	issues = Search(search_query)
+	return issues
+
+	# group the issues by epic
+	# provide metrics by epic
+
+#get_issues_with_label()
+#pprint(dir(get_issues_open_ea_by_epic()))
+print(json.dumps(get_issues_open_ea_by_epic, 
+                 default=lambda obj: vars(obj),
+                 indent=1))

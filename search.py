@@ -16,6 +16,9 @@ class Search():
 		#print "Query: '%s'" % query
 		#print self.search_response
 
+	def get_issue_list(self):
+		return self.search_response
+
 	def get_point_sum(self):
 		backlog_points_sum = 0
 		#print self.search_response
