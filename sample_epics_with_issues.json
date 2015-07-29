@@ -1,0 +1,28 @@
+{
+    "epics": [
+        {
+            "key": "DNS-123",
+            "summary": "implement the thing",
+            "total_points_remain": 98,
+            "stories": [
+                {
+                    "key": "DNS-345",
+                    "summary": "a related task",
+                    "points": 3
+                }
+            ]
+        },
+        {
+            "key": "DNS-124",
+            "summary": "implement the thing",
+            "total_points_remain": 98,
+            "stories": [
+                {
+                    "key": "DNS-345",
+                    "summary": "a related task",
+                    "points": 3
+                }
+            ]
+        }
+    ]
+}

@@ -8,7 +8,7 @@ options = {
     'server': 'https://jira.rax.io'
 }
 
-class Search():
+class Search(object):
 
 	def __init__(self, query):
 		jira = JIRA(options=options)
