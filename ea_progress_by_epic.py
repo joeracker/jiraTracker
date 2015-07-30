@@ -13,39 +13,35 @@ options = {
 }
 
 def group_issues_by_epics(open_issues, epics):
-	# get the list of issues we care about from search
-	epic_statuses = load_sample_json()
+	epic_statuses = {"epics":[]}
 	i = 0
 	for epic in epics:
-		#print epic_statuses[1]["key"]
-		epic_statuses["epics"][i]["key"] = epic.key
-		epic_statuses["epics"][i]["summary"] = epic.fields.summary
-		print("EPIC: %s %s") % (epic.key, epic.fields.summary)
-		print("==========================")
-		y = 0
-		for issue in open_issues:
-			if issue.fields.customfield_10001 == epic.key:
-				print("    %s - %s - %s") % (
-					issue.key,
-					issue.fields.summary,
-					issue.fields.customfield_10008,
-				)
-				if len(epic_statuses["epics"][i]["stories"]) > y:
-						# http://stackoverflow.com/questions/8789279/how-to-make-a-nested-dictionary-and-dynamically-append-data
-				epic_statuses["epics"][i]["stories"][y]["key"] = issue.key
-				epic_statuses["epics"][i]["stories"][y]["summary"] = issue.fields.summary
-				if isinstance(issue.fields.customfield_10008,(int,long)):
-					epic_statuses["epics"][i]["total_points_remain"] += int(issue.fields.customfield_10008)
-					epic_statuses["epics"][i]["stories"][y]["points"] = issue.fields.customfield_10008
-				else:
-					epic_statuses["epics"][i]["total_points_remain"] += 0
-					epic_statuses["epics"][i]["stories"][y]["points"] = 0
+		print("start epic")
+		epic_statuses["epics"].append({
+            "key": epic.key,
+            "summary": epic.fields.summary,
+            "total_points_remain": 0,
+            "stories": []})
 
-				y += 1
-				print y
-		print ("")
-		i += 1
-		print i
+        print("mid")
+        y = 0
+        for issue in open_issues:
+        	#print "  start child issue filter"
+        	#print("  %s = %s") % (epic_statuses["epics"][i]["key"], issue.fields.customfield_10001)
+        	if epic_statuses["epics"][i]["key"] == issue.fields.customfield_10001:
+        		#print "  ***** match"
+        		epic_statuses["epics"][i]["stories"].append({
+            	    "key": issue.key,
+            	    "summary": issue.fields.summary,
+            	    "points": issue.fields.customfield_10008
+        		})
+        	y += 1
+        	#print("  y = %s") % y
+
+    	i += 1
+    	print("epic i = %s") % (i)
+	pprint(epic_statuses)
+
 
 def get_ea_open_issues():
 	search_query = """
