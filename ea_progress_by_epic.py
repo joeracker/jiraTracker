@@ -26,7 +26,7 @@ def display_active_epics_with_issues(epics_issues):
 			for issue in epic["stories"]:
 				print("    %s %s %s") % (issue["key"], issue["summary"], issue["points"])
 
-def group_issues_by_epics(open_issues, epics):
+def OLDgroup_issues_by_epics(open_issues, epics):
 	epic_statuses = {"epics":[]}
 	i = 0
 	for epic in epics:
@@ -53,8 +53,47 @@ def group_issues_by_epics(open_issues, epics):
 	
 	return epic_statuses 
 
-def get_issues_no_epic(open_issues):
+def group_issues_by_epics(open_issues, epics):
+	epic_statuses = {"epics":[]}
+	i = 0
+	for epic in epics:
+		epic_dict = {
+			"key": epic.key,
+			"summary": epic.fields.summary,
+			"total_points_remain": 0,
+			"stories": []}
+		item = build_epic_dictionary_item(epic_dict, open_issues)
+		epic_statuses["epics"].append(item)
+		i += 1
+	
+	no_epic_item = get_issues_no_epic(open_issues)
+	epic_statuses["epics"].append(no_epic_item)
+	return epic_statuses
 
+def get_issues_no_epic(open_issues):
+	no_epic_item_dict = {
+		"key": None,
+		"summary": "No Epic Defined",
+		"total_points_remain": 0,
+		"stories": []}
+	pprint(no_epic_item_dict)
+	return build_epic_dictionary_item(no_epic_item_dict, open_issues)
+
+def build_epic_dictionary_item(epic_item_dict, issues):
+	issue_point_tally = 0
+	for issue in issues:
+		if epic_item_dict["key"] == issue.fields.customfield_10001:
+			if issue.fields.customfield_10008 is None:
+				points = 0
+			else:
+				points = int(issue.fields.customfield_10008)
+			epic_item_dict["stories"].append({
+				"key": issue.key,
+				"summary": issue.fields.summary,
+				"points": points})
+			issue_point_tally = issue_point_tally + points
+	epic_item_dict["total_points_remain"] = issue_point_tally
+	return epic_item_dict
 
 def get_ea_open_issues():
 	search_query = """
